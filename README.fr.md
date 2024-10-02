@@ -44,7 +44,13 @@ pip install -r requirements.txt
 
 `Note : N'oubliez pas de vous placer dans le dossier où se trouve le fichier requirements.txt`
 
-4. **Fichiers nécessaires pour PostgreSQL (LOCAL)**
+> [!IMPORTANT]
+> Si vous ne voulez pas utiliser PostgreSQL comme moteur de base de données, suivez les étapes de SQLite
+
+<details>
+<summary>PostgreSQL</summary>
+
+1. **Fichiers nécessaires pour PostgreSQL (LOCAL)**
 
    Si vous exécutez une base de données PostgreSQL, vous devez ajouter les fichiers au chemin suivant selon votre système d'exploitation
 
@@ -53,7 +59,7 @@ pip install -r requirements.txt
 | Windows | .pg_service.conf | %APPDATA%\postgresql\\.pg_service.conf (SI la carpeta postgresql no existe, crearla) |
 | Linux   | .pg_service.conf | ~/.pg_service.conf (Directorio local)                                                |
 
-4. **Créer un conteneur PostgreSQL**
+2. **Créer un conteneur PostgreSQL**
 
    Le fichier `docker-compose.yml` contient une configuration pour une image postgresql-alpine pour la création de la base de données en local. Veuillez modifier les variables d'environnement suivantes :
 
@@ -61,6 +67,42 @@ pip install -r requirements.txt
 - POSTGRES_PASSWORD=(Same password as in the .pgpass file)
 - POSTGRES_USER=username(Same user as in the .pgpass file)
 ```
+
+</details>
+
+<details>
+<summary>SQLite</summary>
+
+1. **Changer le moteur de base de données sur settings.py**
+
+Dans le fichier settings.py situé à `gestion_escolar\settings.py` cchanger la partie suivante du code
+
+```py
+...
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        "OPTIONS": {
+            "service": "db_service",
+            "passfile": ".pgpass",
+        },
+    }
+}
+...
+```
+
+Pour cette code:
+
+```py
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / "db.sqlite3",
+    }
+}
+```
+
+</details>
 
 ### Structure de la Base de Données
 

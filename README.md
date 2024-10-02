@@ -16,7 +16,7 @@ El Sistema de Gestión Escolar es una aplicación desarrollada para ayudar a las
 
 ## Tecnología
 
-- Django rest v.
+- Django Rest Framework.
 - PostgreSQL
 
 ## Uso
@@ -42,9 +42,15 @@ python -m venv .env
 pip install -r requirements.txt
 ```
 
-`Nota: Recordar estar ubicado en la carpeta que este el archivo requirements.txt`
+`Note : Recordar estar en la misma ruta que esta el archivo requirements.txt`
 
-4. **Archivos necesarios para PostgreSQL (LOCAL)**
+> [!IMPORTANT]
+> En caso de no querer usar PostgreSQL como motor de base de datos seguir los pasos de SQLite
+
+<details>
+<summary>PostgreSQL</summary>
+
+1. **Archivos necesarios para PostgreSQL (LOCAL)**
 
    Si estas ejecutando una base de datos desde posgres tienes que agregar los archivos a la siguiente ruta dependiendo de tu sistema operativo
 
@@ -53,7 +59,7 @@ pip install -r requirements.txt
 | Windows | .pg_service.conf | %APPDATA%\postgresql\\.pg_service.conf (SI la carpeta postgresql no existe, crearla) |
 | Linux   | .pg_service.conf | ~/.pg_service.conf (Directorio local)                                                |
 
-4. **Crear contenedor de postgres**
+2. **Crear contenedor de postgres**
 
    En el archivo `docker-compose.yml` se encuentra configurada una imagen de postgresql-alpine para la creacion de la base de datos de manera local.
    Tener cuenta cambiar las siguientes variables de entorno:
@@ -62,6 +68,42 @@ pip install -r requirements.txt
 - POSTGRES_PASSWORD=(Contraseña igual a la que se ponga en el archivo .pgpass)
 - POSTGRES_USER=username(Usuario igual al que se ponga en el archivo .pgpass)
 ```
+
+</details>
+
+<details>
+<summary>SQLite</summary>
+
+1. **Cambiar Motor de base de datos en settings.py**
+
+En el archivo settings.py ubicado en `gestion_escolar\settings.py` cambiar la siguiente parte de codigo
+
+```py
+...
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        "OPTIONS": {
+            "service": "db_service",
+            "passfile": ".pgpass",
+        },
+    }
+}
+...
+```
+
+Por esta:
+
+```py
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / "db.sqlite3",
+    }
+}
+```
+
+</details>
 
 ### Estructura de la Base de Datos
 
