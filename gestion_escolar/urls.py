@@ -34,7 +34,7 @@ urlpatterns = [
     path('api/', 
         include([
             path('', include('app.api.routers')),
-            path('swagger/schema/', schema_view.with_ui('swagger', cache_timeout=0), name="swagger-schema")
+            path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name="swagger-schema")
             ])
     )
 ]
