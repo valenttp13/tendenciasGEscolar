@@ -22,8 +22,6 @@ class ObtainTokenSerializer(TokenObtainPairSerializer):
 
         return token
 
-from rest_framework import serializers
-
 class UserRegistrationSerializer(serializers.Serializer):
     full_name = serializers.CharField(max_length=100)
     email = serializers.EmailField()
@@ -32,4 +30,4 @@ class UserRegistrationSerializer(serializers.Serializer):
     address = serializers.CharField(max_length=255)
     role_id = serializers.IntegerField()
     username = serializers.CharField(max_length=50)
-    password = serializers.CharField(write_only=True)  # El password solo se enviará en la solicitud, no se devolverá
+    password = serializers.CharField(write_only=True)
