@@ -26,7 +26,7 @@ Le Système de Gestion Scolaire est une application développée pour aider les 
 1. **Créer l'environnement**
 
 ```bash
-python -m venv .env
+python -m venv env
 ```
 
 2. **Activer**
@@ -52,12 +52,16 @@ pip install -r requirements.txt
 
 1. **Fichiers nécessaires pour PostgreSQL (LOCAL)**
 
-   Si vous exécutez une base de données PostgreSQL, vous devez ajouter les fichiers au chemin suivant selon votre système d'exploitation
+   Si vous exécutez une base de données depuis Postgres, vous devez ajouter les variables dans un fichier .env (si vous n'avez pas le fichier, créez-le) et y mettre les variables suivantes :
 
-| Système | Nom du fichier   | Chemin du fichier                                                                    |
-| ------- | ---------------- | ------------------------------------------------------------------------------------ |
-| Windows | .pg_service.conf | %APPDATA%\postgresql\\.pg_service.conf (SI la carpeta postgresql no existe, crearla) |
-| Linux   | .pg_service.conf | ~/.pg_service.conf (Directorio local)                                                |
+   ```bash
+       POSTGRESQL_NAME=<posgresql_database>
+       POSTGRESQL_USER=<posgresql_user>
+       POSTGRESQL_PASS=<postgresql_pass>
+       POSTGRESQL_HOST=localhost
+       POSTGRESQL_PORT=5432
+       DEBUG=True
+   ```
 
 2. **Créer un conteneur PostgreSQL**
 
@@ -80,12 +84,13 @@ Dans le fichier settings.py situé à `gestion_escolar\settings.py` cchanger la 
 ```py
 ...
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        "OPTIONS": {
-            "service": "db_service",
-            "passfile": ".pgpass",
-        },
+   'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': env('POSTGRESQL_NAME'),
+        'USER': env('POSTGRESQL_USER'),
+        'PASSWORD': env('POSTGRESQL_PASS'),
+        'HOST': env('POSTGRESQL_HOST'),
+        'PORT': env('POSTGRESQL_PORT'),
     }
 }
 ...
