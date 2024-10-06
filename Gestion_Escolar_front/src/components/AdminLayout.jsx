@@ -1,12 +1,18 @@
-import React from 'react';
-import { Outlet } from 'react-router-dom';
-import Sidebar from './Sidebar'; 
-import {Navbar} from './Navbar';
+import React, { useEffect } from "react";
+import { Outlet } from "react-router-dom";
+import Sidebar from "./Sidebar";
+import { Navbar } from "./Navbar";
 
 export const AdminLayout = () => {
   const handleLogout = () => {
-    console.log('Cerrar sesión');
+    console.log("Cerrar sesión");
   };
+
+  useEffect(() => {
+    if (localStorage.getItem("access_token") === null) {
+      window.location.href = "/login";
+    }
+  }, []);
 
   return (
     <div className="flex flex-col h-screen">
